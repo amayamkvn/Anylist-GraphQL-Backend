@@ -1,0 +1,51 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Item {
+  """Campo que hace referencia al ID del producto"""
+  id: ID!
+
+  """Campo que hace referencia al nombre del producto"""
+  name: String!
+
+  """Campo que hace referencia a la cantidad de unidades"""
+  quantity: Float!
+
+  """Campo que hace referencia a la unidad de medida"""
+  quantityUnits: String
+}
+
+type Query {
+  items: [Item!]!
+  item(id: ID!): Item!
+}
+
+type Mutation {
+  createItem(createItemInput: CreateItemInput!): Item!
+  updateItem(updateItemInput: UpdateItemInput!): Item!
+  removeItem(id: ID!): Item!
+}
+
+input CreateItemInput {
+  """Campo que hace referencia al nombre del producto"""
+  name: String!
+
+  """Campo que hace referencia a la cantidad de la compra"""
+  quantity: Float!
+
+  """Campo que hace referencia a la cantidad de unidades"""
+  quantityUnits: String
+}
+
+input UpdateItemInput {
+  """Campo que hace referencia al nombre del producto"""
+  name: String
+
+  """Campo que hace referencia a la cantidad de la compra"""
+  quantity: Float
+
+  """Campo que hace referencia a la cantidad de unidades"""
+  quantityUnits: String
+  id: ID!
+}
