@@ -7,7 +7,7 @@ import { SignupInput } from './dto/inputs/signup.input';
 import { AuthResponse } from './types/auth-response.type';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { ValidRoles } from './enums/valid-roles.enum';
+import { ValidRolesEnum } from './enums/valid-roles.enum';
 
 @Resolver(() => AuthResponse)
 export class AuthResolver {

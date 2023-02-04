@@ -5,6 +5,7 @@ import { User } from './entities/user.entity';
 import { SignupInput } from '../auth/dto/inputs/signup.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ValidRolesEnum } from '../auth/enums/valid-roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -57,16 +58,35 @@ export class UsersService {
     }
   }
 
-  async findAll(): Promise<User[]> {
-    return [];
+  async findAll( param_roles: ValidRolesEnum[] ): Promise<User[]> {
+    if( param_roles.length === 0 ){
+      return await this.usersRepository.find({
+        // TODO: No es necesario esto por la configuracion lazy realizada en el entity
+        // relations: {
+        //   last_update_by: true
+        // }
+      });
+    }
+
+    const users_roles = this.usersRepository.createQueryBuilder('users')
+    .andWhere('ARRAY[roles] && ARRAY[:...roles]')
+    .setParameter('roles', param_roles)  
+    .getMany();
+
+    return users_roles;
   }
 
   update(id: number, updateUserInput: UpdateUserInput) {
     return `This action updates a #${id} user`;
   }
 
-  block(id: string): Promise<User> {
-    throw new Error(`Block method not implemented`);
+  async block( id: string, admin: User ): Promise<User> {
+    const userToBlock = await this.findOneById( id );
+    userToBlock.is_active = false;
+    userToBlock.last_update_by = admin;
+
+    const usuario_bloqueado = await this.usersRepository.save( userToBlock );
+    return usuario_bloqueado;
   }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//

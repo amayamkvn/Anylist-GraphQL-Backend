@@ -2,11 +2,11 @@ import { createParamDecorator, ExecutionContext, ForbiddenException, InternalSer
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ForbiddenError } from 'apollo-server-express';
 import { User } from 'src/users/entities/user.entity';
-import { ValidRoles } from '../enums/valid-roles.enum';
+import { ValidRolesEnum } from '../enums/valid-roles.enum';
 
 
 export const CurrentUser = createParamDecorator( 
-    ( roles:ValidRoles[] = [], context: ExecutionContext ) =>  {
+    ( roles:ValidRolesEnum[] = [], context: ExecutionContext ) =>  {
         const ctx = GqlExecutionContext.create( context );
         const user: User = ctx.getContext().req.user;
         
@@ -17,7 +17,7 @@ export const CurrentUser = createParamDecorator(
         if( roles.length === 0 ) return user;
 
         for( const role of user.roles ){
-            if( roles.includes( role as ValidRoles ) ){
+            if( roles.includes( role as ValidRolesEnum ) ){
                 return user;
             }
         }
