@@ -2,20 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Item {
-  """Campo que hace referencia al ID del producto"""
-  id: ID!
-
-  """Campo que hace referencia al nombre del producto"""
-  name: String!
-
-  """Campo que hace referencia a la cantidad de unidades"""
-  quantity: Float!
-
-  """Campo que hace referencia a la unidad de medida"""
-  quantityUnits: String
-}
-
 type User {
   """Campo que hace referencia al ID del usuario"""
   id: ID!
@@ -32,6 +18,20 @@ type User {
   """Campo que hace referencia al estado del usuario"""
   is_active: Boolean!
   last_update_by: User
+  itemCount: Int!
+  items(offset: Int = 0, limit: Int = 10, search: String): [Item!]!
+}
+
+type Item {
+  """Campo que hace referencia al ID del producto"""
+  id: ID!
+
+  """Campo que hace referencia al nombre del producto"""
+  name: String!
+
+  """Campo que hace referencia a la unidad de medida"""
+  quantityUnits: String
+  user: User!
 }
 
 type AuthResponse {
@@ -40,9 +40,9 @@ type AuthResponse {
 }
 
 type Query {
-  items: [Item!]!
+  items(offset: Int = 0, limit: Int = 10, search: String): [Item!]!
   item(id: ID!): Item!
-  users(roles: [ValidRolesEnum!] = []): [User!]!
+  users(roles: [ValidRolesEnum!] = [], offset: Int = 0, limit: Int = 10, search: String): [User!]!
   user(id: ID!): User!
   revalite: AuthResponse!
 }
@@ -57,17 +57,18 @@ type Mutation {
   createItem(createItemInput: CreateItemInput!): Item!
   updateItem(updateItemInput: UpdateItemInput!): Item!
   removeItem(id: ID!): Item!
+  UpdateUser(updateUserInput: UpdateUserInput!): User!
   blockUser(id: ID!): User!
   signup(signupInput: SignupInput!): AuthResponse!
   login(loginInput: LoginInput!): AuthResponse!
+
+  """Ejecuta la construccion de la base de datos"""
+  executeSeed: Boolean!
 }
 
 input CreateItemInput {
   """Campo que hace referencia al nombre del producto"""
   name: String!
-
-  """Campo que hace referencia a la cantidad de la compra"""
-  quantity: Float!
 
   """Campo que hace referencia a la cantidad de unidades"""
   quantityUnits: String
@@ -77,12 +78,18 @@ input UpdateItemInput {
   """Campo que hace referencia al nombre del producto"""
   name: String
 
-  """Campo que hace referencia a la cantidad de la compra"""
-  quantity: Float
-
   """Campo que hace referencia a la cantidad de unidades"""
   quantityUnits: String
   id: ID!
+}
+
+input UpdateUserInput {
+  email: String
+  fullname: String
+  password: String
+  id: ID!
+  roles: [ValidRolesEnum!]
+  is_active: Boolean
 }
 
 input SignupInput {

@@ -10,9 +10,9 @@ export class CreateItemInput {
   @IsNotEmpty()
   name: string;
   
-  @Field(() => Float, { description: 'Campo que hace referencia a la cantidad de la compra' })
-  @IsPositive()
-  quantity: number;
+  // @Field(() => Float, { description: 'Campo que hace referencia a la cantidad de la compra' })
+  // @IsPositive()
+  // quantity: number;
   
   @Field(() => String, { description: 'Campo que hace referencia a la cantidad de unidades', nullable: true })
   @IsString()

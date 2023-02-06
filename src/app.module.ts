@@ -10,6 +10,8 @@ import { join } from 'path';
 import { ItemsModule } from './items/items.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { SeedModule } from './seed/seed.module';
+import { CommonModule } from './common/common.module';
 
 
 @Module({
@@ -42,7 +44,9 @@ import { AuthModule } from './auth/auth.module';
 
     ItemsModule,
     UsersModule,
-    AuthModule
+    AuthModule,
+    SeedModule,
+    CommonModule
   ],
   controllers: [
 

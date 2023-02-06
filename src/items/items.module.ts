@@ -13,7 +13,8 @@ import { Item } from './entities/item.entity';
     TypeOrmModule.forFeature([ Item ])
   ],
   exports: [
-
+    ItemsService,
+    TypeOrmModule
   ]
 })
 export class ItemsModule {}
