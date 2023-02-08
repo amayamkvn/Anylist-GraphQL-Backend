@@ -2,6 +2,27 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type ListItem {
+  id: ID!
+  quantity: Float!
+  completed: Boolean!
+  list: List!
+  item: Item!
+}
+
+type List {
+  """ID de la lista"""
+  id: ID!
+
+  """Nombre de la lista"""
+  listname: String!
+
+  """Usuario al que pertenece la lista"""
+  user: User!
+  items(offset: Int = 0, limit: Int = 10, search: String): [ListItem!]!
+  totalItems: Int!
+}
+
 type User {
   """Campo que hace referencia al ID del usuario"""
   id: ID!
@@ -20,6 +41,8 @@ type User {
   last_update_by: User
   itemCount: Int!
   items(offset: Int = 0, limit: Int = 10, search: String): [Item!]!
+  listas(offset: Int = 0, limit: Int = 10, search: String): [List!]!
+  listCount: Int!
 }
 
 type Item {
@@ -32,6 +55,7 @@ type Item {
   """Campo que hace referencia a la unidad de medida"""
   quantityUnits: String
   user: User!
+  listItem: [ListItem!]!
 }
 
 type AuthResponse {
@@ -44,6 +68,9 @@ type Query {
   item(id: ID!): Item!
   users(roles: [ValidRolesEnum!] = [], offset: Int = 0, limit: Int = 10, search: String): [User!]!
   user(id: ID!): User!
+  lists(offset: Int = 0, limit: Int = 10, search: String): [List!]!
+  oneList(id: ID!): List!
+  listItem(id: ID!): ListItem!
   revalite: AuthResponse!
 }
 
@@ -59,6 +86,11 @@ type Mutation {
   removeItem(id: ID!): Item!
   UpdateUser(updateUserInput: UpdateUserInput!): User!
   blockUser(id: ID!): User!
+  createList(createListInput: CreateListInput!): List!
+  updateList(updateListInput: UpdateListInput!): List!
+  removeList(id: ID!): List!
+  createListItem(createListItemInput: CreateListItemInput!): ListItem!
+  updateListItem(updateListItemInput: UpdateListItemInput!): ListItem!
   signup(signupInput: SignupInput!): AuthResponse!
   login(loginInput: LoginInput!): AuthResponse!
 
@@ -90,6 +122,32 @@ input UpdateUserInput {
   id: ID!
   roles: [ValidRolesEnum!]
   is_active: Boolean
+}
+
+input CreateListInput {
+  """Nombre de la lista"""
+  listname: String!
+}
+
+input UpdateListInput {
+  """Nombre de la lista"""
+  listname: String
+  id: ID!
+}
+
+input CreateListItemInput {
+  quantity: Float = 0
+  completed: Boolean = false
+  listId: ID!
+  itemId: ID!
+}
+
+input UpdateListItemInput {
+  quantity: Float = 0
+  completed: Boolean = false
+  listId: ID
+  itemId: ID
+  id: ID!
 }
 
 input SignupInput {

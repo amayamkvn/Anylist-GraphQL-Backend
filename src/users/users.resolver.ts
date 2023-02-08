@@ -10,6 +10,8 @@ import { UpdateUserInput } from './dto';
 import { ItemsService } from 'src/items/items.service';
 import { Item } from 'src/items/entities/item.entity';
 import { PaginationArg, SearchArg } from 'src/common/dto/args';
+import { List } from 'src/lists/entities/list.entity';
+import { ListsService } from '../lists/lists.service';
 
 
 @Resolver(() => User)
@@ -17,7 +19,8 @@ import { PaginationArg, SearchArg } from 'src/common/dto/args';
 export class UsersResolver {
   constructor(
     private readonly usersService: UsersService,
-    private readonly itemsService: ItemsService
+    private readonly itemsService: ItemsService,
+    private readonly listService: ListsService
     ) {}
 
   // @Mutation(() => User)
@@ -77,6 +80,22 @@ export class UsersResolver {
     return this.itemsService.findAll( user, pagination, search );
   }
 
+  @ResolveField( () => [List], { name: 'listas' } )
+  async listsByUser(
+    @CurrentUser([ ValidRolesEnum.admin ]) admin: User,
+    @Parent() user: User,
+    @Args() pagination: PaginationArg,
+    @Args() search: SearchArg,
+  ): Promise<List[]>{
+    return this.listService.findAll( user, pagination, search );
+  }
 
+  @ResolveField( () => Int, { name: 'listCount' } )
+  async listCount(
+    @CurrentUser([ ValidRolesEnum.admin ]) admin: User,
+    @Parent() user: User
+  ): Promise<number>{
+    return this.listService.listCount( user );
+  }
 
 }

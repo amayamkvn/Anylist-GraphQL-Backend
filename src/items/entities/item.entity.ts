@@ -1,6 +1,7 @@
-import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { ObjectType, Field, Int, Float, ID } from '@nestjs/graphql';
+import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { User } from 'src/users/entities/user.entity';
+import { ListItem } from 'src/list-item/entities/list-item.entity';
 
 @Entity({ name: 'items' })
 @ObjectType()
@@ -10,7 +11,7 @@ export class Item {
   @Field(() => ID, { description: 'Campo que hace referencia al ID del producto' })
   id: string;
   
-  @Column({ unique: true, comment: 'Campo que hace referencia al nombre del producto' })  
+  @Column({ unique: false, comment: 'Campo que hace referencia al nombre del producto' })  
   @Field(() => String, { description: 'Campo que hace referencia al nombre del producto' })
   name: string;
   
@@ -29,6 +30,8 @@ export class Item {
   @Field( () => User )
   user: User;
   
-
+  @OneToMany( () => ListItem, (listItem) => listItem.item, { lazy: true } )
+  @Field( () => [ListItem] )
+  listItem: ListItem[];
 
 }

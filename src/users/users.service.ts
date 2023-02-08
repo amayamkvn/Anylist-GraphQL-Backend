@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ValidRolesEnum } from '../auth/enums/valid-roles.enum';
 import { PaginationArg, SearchArg } from 'src/common/dto/args';
-import { makePagination } from '../../../../Plan operativo anual/Backend-SM/src/poa/pei/helper/make-pagination.helper';
+
 
 @Injectable()
 export class UsersService {

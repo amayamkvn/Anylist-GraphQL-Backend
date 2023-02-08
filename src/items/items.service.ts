@@ -7,7 +7,6 @@ import { User } from 'src/users/entities/user.entity';
 import { PaginationArg, SearchArg } from 'src/common/dto/args';
 
 
-
 @Injectable()
 export class ItemsService {
 
